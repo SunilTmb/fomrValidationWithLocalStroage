@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+
+    <style>
+        .formSection{
+            max-width: 1200px;
+            width: 100%;
+            margin: 100px auto;
+            padding:60px 30px;
+            background-color: antiquewhite;
+            border-radius: 5px;
+            display: grid;
+            grid-template-columns: 1fr 1fr ;
+
+        }
+        form div,
+        .table{
+            margin-bottom: 15px;
+            display: grid;
+            gap:10px;
+            grid-template-columns: 1fr 3fr 1fr;
+        }
+        form input{
+            padding:5px 10px;
+        }
+        form label{
+            font-size: 20px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .error_Message{
+            font-size: 16px;
+            color:red;
+        }
+        input + b{
+            display: none;
+        }
+        input + b.show{
+            display: block;
+        }
+        .table div{
+            border: 1px solid;
+            padding:5px 10px;
+        }
+      
+
+    </style>
+</head>
+
+<body>
+    <section class="formSection">
+        <form action="/myphp.php" name="myForm" onsubmit="return validateForm()" method="post">
+            <div >
+                <label for="name">Name: </label>
+                <input type="text" id="name" name="name" value="">
+                <p class="error_Message"></p>
+            </div>
+
+            <div>
+                <label for="phnumber">Mob Number: </label>
+                <input type="number" id="phnumber" name="phnumber">
+                <p class="error_Message"></p>
+            </div>
+
+            <div>
+                <label for="email">Email: </label>
+                <input type="text" id="email" name="email">
+                <p class="error_Message"></p>
+            </div>
+
+            <div>
+                <label for="password">Password: </label>
+                <input type="password" id="password" name="password" autocomplete="off">
+                <p class="error_Message"></p>
+            </div>
+
+            <div>
+                <label for="cpassword">Confirm Password: </label>
+                <input type="password" id="cpassword" name="cpassword" autocomplete="off">
+                <p class="error_Message"></p>
+            </div>
+
+            <div>
+                <input type="submit" id="submit">
+            </div>
+        </form>
+
+
+
+        <div> 
+            <div class="table">
+                <div id="dname"> Name:</div>
+                <div ></div>
+            </div>
+            <div class="table">
+                <div id="dphnumber">Phone No:</div>
+                <div></div>
+            </div>
+            <div class="table">
+                <div id="demail"> Email:</div>
+                <div></div>
+            </div>
+            <div class="table">
+                <div id="dpassword">Password:</div>
+                <div></div>
+            </div>
+        </div>
+    </section> 
+    
+    <script>
+
+         
+let dnameValue =document.getElementById("dname").nextElementSibling;
+let dphnumberValue =document.getElementById("dphnumber").nextElementSibling;
+let dEmailValue =document.getElementById("demail").nextElementSibling;
+let dPswValue =document.getElementById("dpassword").nextElementSibling;
+
+
+
+        
+
+    //clear error message
+    function clearError (){
+        let clearMsg = document.querySelectorAll(".error_Message");
+        console.log(clearMsg)
+        for( let items of clearMsg )
+            {
+                items.innerHTML="";
+            }
+    }
+    
+    //set error message
+    function setError(id, message){
+        var current = document.getElementById(id);
+        var ele = current.nextElementSibling;
+        ele.innerHTML = message;
+        console.log(ele);
+    }
+
+
+    function validateForm(){
+        var retrunVal = false;
+        clearError();
+
+        
+      //perform validation if validation fails then set the value of retrunVal to false
+        var name = document.forms["myForm"]["name"].value;
+        localStorage.setItem("name", name)
+        if(name.length < 5){
+            setError( "name" , "* Name is too Short" )
+            var retrunVal = false;
+        }
+
+        var phnumber = document.forms["myForm"]["phnumber"].value;
+        localStorage.setItem("phnumber", phnumber)
+        if(phnumber.length < 10 ){
+            setError( "phnumber" , "* Enter Valid Number" )
+            var retrunVal = false;
+        }
+
+        var email = document.forms["myForm"]["email"].value;
+        localStorage.setItem("email", email)
+        if(phnumber.length < 2 ){
+            setError( "email" , "* Enter Valid email" )
+            var retrunVal = false;
+        }
+        
+        var password = document.forms["myForm"]["password"].value;
+        localStorage.setItem("password", password)
+        if(password >3  ){
+            setError( "password" , "* Enter Valid Number" )
+            var retrunVal = false;
+        }
+
+        var cpassword = document.forms["myForm"]["cpassword"].value;
+        localStorage.setItem("cpassword", cpassword)
+        if( cpassword != password  ){
+            setError( "cpassword" , "*Password did not match" )
+            var retrunVal = false;
+        }
+
+        //Form input data storage on submit 
+        dnameValue.innerHTML = localStorage.getItem("name")
+        dphnumberValue.innerHTML = localStorage.getItem("phnumber")
+        dEmailValue.innerHTML = localStorage.getItem("email")
+        dPswValue.innerHTML = localStorage.getItem("password")
+    
+        return retrunVal;
+    }
+
+    window.onload = function() {
+        dnameValue.innerHTML = localStorage.getItem("name")
+        dphnumberValue.innerHTML = localStorage.getItem("phnumber")
+        dEmailValue.innerHTML = localStorage.getItem("email")
+        dPswValue.innerHTML = localStorage.getItem("password")
+    }
+
+
+
+
+
+    </script>
+</body>
+</html>
